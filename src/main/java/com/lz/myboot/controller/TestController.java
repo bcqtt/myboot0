@@ -1,7 +1,14 @@
 package com.lz.myboot.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @RestController
 public class TestController {
