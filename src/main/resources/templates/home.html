@@ -17,6 +17,7 @@
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
         websocket = new WebSocket("ws://localhost:8761/myboot/websocket");
+        //websocket = new WebSocket("ws://localhost:9018/getServiceIpAndPort");
     }
     else {
         alert('当前浏览器 Not support websocket')

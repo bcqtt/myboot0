@@ -81,9 +81,55 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
 			</plugin>
 		</plugins>
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<excludes>
+					<exclude>env/*/*</exclude>
+				</excludes>
+				<includes>
+					<include>messages/*</include>
+					<include>**/*.xml</include>
+					<include>security/*</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources/env/${profiles.active}</directory>
+			</resource>
+		</resources>
 	</build>
-
+	
+	<profiles>
+	    <!-- 开发环境 -->
+	    <profile>
+	        <id>dev</id>
+	        <properties>
+	            <profiles.active>dev</profiles.active>
+	        </properties>
+	        <activation>
+	            <activeByDefault>true</activeByDefault>
+	        </activation>
+	    </profile>
+	    <!-- 生产环境 -->
+	    <profile>
+	        <id>pro</id>
+	        <properties>
+	            <profiles.active>pro</profiles.active>
+	        </properties>
+	    </profile>
+	</profiles>
 
 </project>
