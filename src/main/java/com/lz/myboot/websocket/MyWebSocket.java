@@ -9,11 +9,15 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @ServerEndpoint(value = "/websocket")
 @Component
 public class MyWebSocket {
+	
+	private static final Logger logger = LoggerFactory.getLogger(MyWebSocket.class);
 	
 	//静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int onlineCount = 0;
@@ -31,11 +35,11 @@ public class MyWebSocket {
         this.session = session;
         webSocketSet.add(this);     //加入set中
         addOnlineCount();           //在线数加1
-        System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
+        logger.info("有新连接加入！当前在线人数为" + getOnlineCount());
         try {
             sendMessage("错误");
         } catch (IOException e) {
-            System.out.println("IO异常");
+            logger.error("IO异常");
         }
     }
     
@@ -46,7 +50,7 @@ public class MyWebSocket {
     public void onClose() {
         webSocketSet.remove(this);  //从set中删除
         subOnlineCount();           //在线数减1
-        System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
+        logger.info("有一连接关闭！当前在线人数为" + getOnlineCount());
     }
     
     /**
@@ -55,7 +59,7 @@ public class MyWebSocket {
      * @param message 客户端发送过来的消息*/
     @OnMessage
     public void onMessage(String message, Session session) {
-        System.out.println("来自客户端的消息:" + message);
+    	logger.info("来自客户端的消息:" + message);
 
         //群发消息
         for (MyWebSocket item : webSocketSet) {
@@ -71,7 +75,7 @@ public class MyWebSocket {
      * 发生错误时调用
     @OnError */
     public void onError(Session session, Throwable error) {
-        System.out.println("发生错误");
+    	logger.error("发生错误");
         error.printStackTrace();
     }
     
